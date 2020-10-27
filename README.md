@@ -45,7 +45,7 @@ Plugins Needed:
  
  Example:
  
-- *** - "{20%} &aMoney: &b{money}"***
+***- "{20%} &aMoney: &b{money}"***
 
  ••••••••••••••••••••••••••••
  
