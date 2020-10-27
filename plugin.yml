@@ -1,0 +1,8 @@
+name: StatsBar
+version: 1.0.0
+load: STARTUP
+author: Britt
+main: BossBar\Main
+api:
+- 3.0.0
+- 4.0.0
