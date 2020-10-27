@@ -1,0 +1,31 @@
+---
+# ••••••••••Stats Bar•••••••••••••••••
+# If you want you can add Stuff like Money, Rank
+# Make sure to add the plugins for the api to work
+# Plugins Needed: EcomonyAPI, PurePerms, KDR, FormAPI
+# ••••••••••••••••••••••••••••
+# Avaiable KeyWords:
+# {display_name} , {name}
+# {x} , {y} , {z}
+# {world} , {world_players}
+# {players} , {max_online}
+# {hour} , {minute} , {second}
+# {money} , {ping} , {ip}
+# {rank} , {prefix} , {suffix}
+# {kdr} , {kills} , {deaths}
+# ••••••••••••••••••••••••••••
+# For Color Codes use &
+# Example:
+# - "{20%} &aMoney: &b{money}"
+# ••••••••••••••••••••••••••••
+head-message: "main text"
+changing-messages:
+ - "{0%} YOUR TEXT"
+ - "{20%} YOUR TEXT"
+ - "{40%} YOUR TEXT"
+ - "{60%} YOUR TEXT"
+ - "{80%} YOUR TEXT"
+ - "{100%} YOUR TEXT"
+change-speed: 7
+worlds: []
+...
