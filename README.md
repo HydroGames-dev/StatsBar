@@ -3,6 +3,11 @@ Pocketmine Server Plugin thats Displays a BossBar with Custom Text.
 
 Github Page: [Click me](https://hydrogames-dev.github.io/StatsBar/)
 
+## Download/Installation
+- Check Releases for **.phar** download
+- Put the plugin in ``/plugins`` Folder
+- and restart server and edit config.yml
+
 ## Info
 There are Keywords for the **config.yml**
 
