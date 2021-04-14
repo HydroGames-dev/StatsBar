@@ -2,12 +2,16 @@
 
 namespace BossBar;
 
+use pocketmine\entity\Attribute;
+use pocketmine\entity\AttributeMap;
+use pocketmine\entity\DataPropertyManager;
 use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\SetEntityDataPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
+use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\{Player, Server};
 use BossBar\Main;
 use BossBar\BossBarValues;
