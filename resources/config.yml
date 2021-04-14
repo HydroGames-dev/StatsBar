@@ -11,16 +11,21 @@
 # {players} , {max_online}
 # {hour} , {minute} , {second}
 # {ping} , {ip}
+#
 # EconomyAPI
 # {money}
+#
 # PurePerms
 # {rank} , {prefix} , {suffix}
+#
 # KDR
 # {kdr} , {kills} , {deaths}
+#
 # ••••••••••••••••••••••••••••
-# For Color Codes use &
+# To go to the next line use \n or {EOL}
+# For Color Codes use & or §
 # Example:
-# - "{20%} &aMoney: &b{money}"
+# - "{25%} &aMoney: &b{money}"
 # ••••••••••••••••••••••••••••
 head-message: "main text"
 changing-messages:
