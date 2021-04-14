@@ -39,7 +39,6 @@ Plugins Needed:
 - `{second}` > Seconds.
 - `{money}` > Player's Money.
 - `{ping}` > Player's ping.
-- `{ip}` > Server IP.
 - `{rank}` > Player's rank.
 - `{prefix}` > Rank prefix.
 - `{suffix}` > Rank suffix.

@@ -129,7 +129,6 @@ class Main extends PluginBase implements Listener{
 		$text = str_replace("{x}", $player->getFloorX(), $text);
 		$text = str_replace("{y}", $player->getFloorY(), $text);
 		$text = str_replace("{z}", $player->getFloorZ(), $text);
-		$text = str_replace("{ip}", $player->getAddress(), $text);
 		$text = str_replace("{ping}", $player->getPing(), $text);
 		$text = str_replace("{world}", (($levelname = $player->getLevel()->getName()) === false ? "" : $levelname), $text);
 		$text = str_replace("{world_players}", count($player->getLevel()->getPlayers()), $text);
