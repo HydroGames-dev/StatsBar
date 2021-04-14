@@ -11,7 +11,7 @@ Github Page: [Click me](https://hydrogames-dev.github.io/StatsBar/)
 ## Info
 There are Keywords for the **config.yml**
 
-•••••••••• **Stats Bar** •••••••••••••••••
+- **Stats Bar**
 
 If you want you can add Stuff like Money, Rank
 
@@ -21,38 +21,37 @@ Plugins Needed:
 - **EcomonyAPI**
 - **PurePerms**
 - **KDR**
-- **FormAPI**
 
 ••••••••••••••••••••••••••••
 
  Avaiable KeyWords:
-- {display_name} > Shows Player's Name.
-- {name} > Shows Player's Real Name.
-- {x} > X Coordinates.
-- {y} > Y Coordinates.
-- {z} > Z Coordinates.
-- {world} > World name.
-- {world_players} > World Players count.
-- {players} > Online Players.
-- {max_online} > Max Players Count.
-- {hour} > Hour.
-- {minute} > Minutes.
-- {second} > Seconds.
-- {money} > Player's Money.
-- {ping} > Player's ping.
-- {ip} > Server IP.
-- {rank} > Player's rank.
-- {prefix} > Rank prefix.
-- {suffix} > Rank suffix.
-- {kdr} > Player's KDR ratio.
-- {kills} > Player's kills.
-- {deaths} > Player's Deaths.
+- `{display_name}` > Shows Player's Name.
+- `{name}` > Shows Player's Real Name.
+- `{x}` > X Coordinates.
+- `{y}` > Y Coordinates.
+- `{z}` > Z Coordinates.
+- `{world}` > World name.
+- `{world_players}` > World Players count.
+- `{players}` > Online Players.
+- `{max_online}` > Max Players Count.
+- `{hour}` > Hour.
+- `{minute}` > Minutes.
+- `{second}` > Seconds.
+- `{money}` > Player's Money.
+- `{ping}` > Player's ping.
+- `{ip}` > Server IP.
+- `{rank}` > Player's rank.
+- `{prefix}` > Rank prefix.
+- `{suffix}` > Rank suffix.
+- `{kdr}` > Player's KDR ratio.
+- `{kills}` > Player's kills.
+- `{deaths}` > Player's Deaths.
 
- For **Color Codes** use **&**
+ For **Color Codes** use `&` or `§`
  
  Example:
  
-***- "{20%} &aMoney: &b{money}"***
+- *** "`{20%}` &aMoney: &b`{money}`" ***
 
  ••••••••••••••••••••••••••••
  
@@ -60,9 +59,9 @@ Plugins Needed:
  
  Plugin: StatsBar
  
- Author: Britt
+ Author: HydroGames
  
  Version: 1.0.0
  
- API: 3.0.0, 4.0.0
+ API: 3.0.0
  

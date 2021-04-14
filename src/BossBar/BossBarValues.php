@@ -2,6 +2,8 @@
 
 namespace BossBar;
 
+use BossBar\Main;
+use BossBar\API;
 use pocketmine\entity\Attribute;
 
 class BossBarValues extends Attribute{

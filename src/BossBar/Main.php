@@ -2,64 +2,77 @@
 
 namespace BossBar;
 
-use pocketmine\event\entity\EntityLevelChangeEvent;
+use BossBar\API;
+use BossBar\SendTask;
+use BossBar\BossBarValues;
+use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
+use pocketmine\plugin\Plugin;
+use pocketmine\{Player, Server};
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\level\Level;
-use pocketmine\Player;
+use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\HandlerList;
+use pocketmine\scheduler\TaskScheduler;
+use pocketmine\scheduler\TaskHandler;
+use pocketmine\scheduler\Task;
 use onebone\economyapi\EconomyAPI;
 use _64FF00\PurePerms\PurePerms;
 use JackMD\KDR\KDR;
-use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Config;
+use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
-use BossBar\Main;
 
 class Main extends PluginBase implements Listener{
 
-	private static $instance = null;
-	
-	private $purePerms;
-	
-	private $economyAPI;
-	
-	private $kdr;
+    private static $instance = null;
 
-	public $entityRuntimeId = null, $headBar = '', $cmessages = [], $changeSpeed = 0, $i = 0;
+    private $purePerms;
 
-	public $API;
+    private $economyAPI;
 
-	public function onEnable(){
-		$this->saveDefaultConfig();
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		$this->headBar = $this->getConfig()->get('head-message', '');
-		$this->cmessages = $this->getConfig()->get('changing-messages', []);
-		$this->changeSpeed = $this->getConfig()->get('change-speed', 0);
-		if ($this->changeSpeed > 0) $this->getServer()->getScheduler()->scheduleRepeatingTask(new SendTask($this), 20 * $this->changeSpeed);
-		$this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-	    $this->purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-		$this->kdr = $this->getServer()->getPluginManager()->getPlugin("KDR");
-	}
-		
-	public static function getInstance(){
-		return self::$instance;
-	}
-	public function onLoad(){
-		self::$instance = $this;
-	}
+    private $kdr;
 
-	public function onJoin(PlayerJoinEvent $ev){
-		if (in_array($ev->getPlayer()->getLevel(), $this->getWorlds())){
-			if ($this->entityRuntimeId === null){
-				$this->entityRuntimeId = API::addBossBar([$ev->getPlayer()], 'Please wait loading StatsBar...');
-				$this->getServer()->getLogger()->debug($this->entityRuntimeId === NULL ? 'Couldn\'t add StatsBar' : 'Successfully added StatsBar with EID: ' . $this->entityRuntimeId);
-			} else{
-				API::sendBossBarToPlayer($ev->getPlayer(), $this->entityRuntimeId, $this->getText($ev->getPlayer()));
-				$this->getServer()->getLogger()->debug('StatsBar EID exists already EID: ' . $this->entityRuntimeId);
-			}
-		}
-	}
+    public $entityRuntimeId = null, $headBar = '', $cmessages = [], $changeSpeed = 0, $i = 0;
 
-	public function onLevelChange(EntityLevelChangeEvent $ev){
+    public $API;
+
+    public function onEnable()
+    {
+        $this->saveResource("config.yml");
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->headBar = $this->getConfig()->get('head-message', '');
+        $this->cmessages = $this->getConfig()->get('changing-messages', []);
+        $this->changeSpeed = $this->getConfig()->get('change-speed', 0);
+        if($this->changeSpeed > 0){
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new SendTask($this), 20 * $this->changeSpeed);
+        }
+        $this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $this->purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
+        $this->kdr = $this->getServer()->getPluginManager()->getPlugin("KDR");
+    }
+
+    public static function getInstance(){
+        return self::$instance;
+    }
+
+    public function onLoad(){
+        self::$instance = $this;
+    }
+
+    public function onJoin(PlayerJoinEvent $ev){
+        if(in_array($ev->getPlayer()->getLevel(), $this->getWorlds())){
+            if($this->entityRuntimeId === null){
+                $this->entityRuntimeId = API::addBossBar([$ev->getPlayer()], 'Please wait loading StatsBar...');
+                $this->getServer()->getLogger()->debug($this->entityRuntimeId === NULL ? 'Couldn\'t add StatsBar' : 'Successfully added StatsBar with EID: ' . $this->entityRuntimeId);
+            }else{
+                API::sendBossBarToPlayer($ev->getPlayer(), $this->entityRuntimeId, $this->getText($ev->getPlayer()));
+                $this->getServer()->getLogger()->debug('StatsBar EID exists already EID: ' . $this->entityRuntimeId);
+            }
+        }
+    }
+
+    public function onLevelChange(EntityLevelChangeEvent $ev){
 		if ($ev->isCancelled() || !$ev->getEntity() instanceof Player) return;
 		if (in_array($ev->getTarget(), $this->getWorlds())){
 			if ($this->entityRuntimeId === null){
@@ -87,6 +100,7 @@ class Main extends PluginBase implements Listener{
 
 	public function getText(Player $player){
 		$text = '';
+		
 		if (!empty($this->headBar)) $text .= $this->formatText($player, $this->headBar) . "\n" . "\n" . TextFormat::RESET;
 		$currentMSG = $this->cmessages[$this->i % count($this->cmessages)];
 		if (strpos($currentMSG, '%') > -1){
@@ -120,6 +134,8 @@ class Main extends PluginBase implements Listener{
 		$text = str_replace("{kdr}", $this->kdr->getProvider()->getKillToDeathRatio($player), $text);
 		$text = str_replace("{deaths}", $this->kdr->getProvider()->getPlayerDeathPoints($player), $text);
 		$text = str_replace("{kills}", $this->kdr->getProvider()->getPlayerKillPoints($player), $text);
+		// Color Code Tags
+		$text = str_replace("{EOL}", "\n", $text);
 		$text = str_replace("{BLACK}", "&0", $text);
 		$text = str_replace("{DARK_BLUE}", "&1", $text);
 		$text = str_replace("{DARK_GREEN}", "&2", $text);
@@ -139,10 +155,11 @@ class Main extends PluginBase implements Listener{
 		$text = str_replace("{OBFUSCATED}", "&k", $text);
 		$text = str_replace("{BOLD}", "&l", $text);
 		$text = str_replace("{STRIKETHROUGH}", "&m", $text);
-		$text = str_replace("{UNDERLINE}", "&n", $text);
+		$text = str_replace("{UNDERLINE}", "&u", $text);
 		$text = str_replace("{ITALIC}", "&o", $text);
 		$text = str_replace("{RESET}", "&r", $text);
-
+		// Color Codes Symbol
+		$text = str_replace("&n", TextFormat::EOL, $text);
 		$text = str_replace("&0", TextFormat::BLACK, $text);
 		$text = str_replace("&1", TextFormat::DARK_BLUE, $text);
 		$text = str_replace("&2", TextFormat::DARK_GREEN, $text);
@@ -162,17 +179,18 @@ class Main extends PluginBase implements Listener{
 		$text = str_replace("&k", TextFormat::OBFUSCATED, $text);
 		$text = str_replace("&l", TextFormat::BOLD, $text);
 		$text = str_replace("&m", TextFormat::STRIKETHROUGH, $text);
-		$text = str_replace("&n", TextFormat::UNDERLINE, $text);
+		$text = str_replace("&u", TextFormat::UNDERLINE, $text);
 		$text = str_replace("&o", TextFormat::ITALIC, $text);
 		$text = str_replace("&r", TextFormat::RESET, $text);
 
 		return $text;
 	}
-	
+
 	private function getWorlds(){
 		$mode = $this->getConfig()->get("mode", 0);
 		$worldnames = $this->getConfig()->get("worlds", []);
 		$worlds = [];
+		
 		switch ($mode){
 			case 0:
 				$worlds = $this->getServer()->getLevels();
@@ -194,6 +212,7 @@ class Main extends PluginBase implements Listener{
 		}
 		return $worlds;
 	}
+	
 	public function getPlayerRank(Player $player): string{
 			$group = $this->purePerms->getUserDataMgr()->getData($player)['group'];
 
@@ -204,11 +223,6 @@ class Main extends PluginBase implements Listener{
 			}
 		}
 
-		/**
-		 * @param Player $player
-		 * @param null   $levelName
-		 * @return string
-		 */
 		public function getPrefix(Player $player, $levelName = null): string{
 			$purePerms = $this->purePerms;
 			$prefix = $purePerms->getUserDataMgr()->getNode($player, "prefix");
@@ -230,11 +244,6 @@ class Main extends PluginBase implements Listener{
 			}
 		}
 
-		/**
-		 * @param Player $player
-		 * @param null   $levelName
-		 * @return string
-		 */
 		public function getSuffix(Player $player, $levelName = null): string{
 			$purePerms = $this->purePerms;
 			$suffix = $purePerms->getUserDataMgr()->getNode($player, "suffix");
@@ -255,4 +264,4 @@ class Main extends PluginBase implements Listener{
 				return $worldData["suffix"];
 			}
 		}
-	}
+}
