@@ -26,7 +26,6 @@ use pocketmine\event\HandlerList;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\scheduler\Task;
-use pocketmine\event\server\DataPacketReceiveEvent;
 use onebone\economyapi\EconomyAPI;
 use _64FF00\PurePerms\PurePerms;
 use JackMD\KDR\KDR;
@@ -56,7 +55,7 @@ class Main extends PluginBase implements Listener{
         $this->cmessages = $this->getConfig()->get('changing-messages', []);
         $this->changeSpeed = $this->getConfig()->get('change-speed', 0);
         if($this->changeSpeed > 0){
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new SendTask($this), 20 * $this->changeSpeed);
+        $this->getScheduler()->scheduleRepeatingTask(new SendTask($this), 20 * $this->changeSpeed);
         }
         $this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $this->purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
